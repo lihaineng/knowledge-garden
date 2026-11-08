@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 const { tag, notes } = Astro.props;
 ---
 
-<BaseLayout title={`标签：${tag}`} description={`知识花园中关于“${tag}”的笔记。`}>
-  <header class="page-intro"><p class="eyebrow">GARDEN PATH</p><h1>#{tag}</h1><p>这条小径上有 {notes.length} 篇笔记。</p></header>
+<BaseLayout title={`主题：${tag}`} description={`知识博客中关于“${tag}”的文章。`}>
+  <header class="page-intro"><p class="eyebrow">TOPIC ARCHIVE</p><h1>#{tag}</h1><p>这个主题下有 {notes.length} 篇文章。</p></header>
   <div class="note-grid full">{notes.map((note) => <NoteCard note={note} />)}</div>
 </BaseLayout>

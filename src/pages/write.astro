@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { NEW_ARTICLE_URL, REPOSITORY_URL } from '../lib/site';
+
+const template = `---
+title: 文章标题
+description: 用一句话概括这篇文章
+created: 2026-11-09
+tags:
+  - 主题
+draft: false
+---
+
+从这里开始写正文。
+`;
+---
+
+<BaseLayout title="写文章" description="使用 GitHub 网页编辑器撰写并发布新文章。">
+  <header class="page-intro write-intro"><p class="eyebrow">WRITE & PUBLISH</p><h1>在 GitHub 上写文章</h1><p>不需要本地环境。创建 Markdown、提交到 main，网站会自动完成发布。</p></header>
+  <section class="write-workflow">
+    <ol>
+      <li><span>01</span><div><h2>打开编辑器</h2><p>进入仓库的文章目录，填写一个以 <code>.md</code> 结尾的英文文件名。</p></div></li>
+      <li><span>02</span><div><h2>粘贴模板并写作</h2><p>复制下方模板，填写标题、摘要、日期、主题和正文。</p></div></li>
+      <li><span>03</span><div><h2>提交并等待发布</h2><p>点击 Commit changes。GitHub Actions 通常会在一分钟内更新网站。</p></div></li>
+    </ol>
+    <div class="write-actions"><a class="button primary" href={NEW_ARTICLE_URL} target="_blank" rel="noreferrer">打开 GitHub 编辑器 ↗</a><a class="button ghost" href={`${REPOSITORY_URL}/actions`} target="_blank" rel="noreferrer">查看发布状态</a></div>
+  </section>
+  <section class="template-panel">
+    <div><p class="eyebrow">ARTICLE TEMPLATE</p><h2>文章模板</h2><button class="copy-template" type="button" data-template={template}>复制模板</button></div>
+    <pre><code>{template}</code></pre>
+  </section>
+  <script is:inline>
+    document.querySelector('.copy-template')?.addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      await navigator.clipboard.writeText(button.dataset.template || '');
+      button.textContent = '已复制 ✓';
+      setTimeout(() => { button.textContent = '复制模板'; }, 1800);
+    });
+  </script>
+</BaseLayout>

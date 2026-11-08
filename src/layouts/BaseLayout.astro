@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { SITE_DESCRIPTION, SITE_NAME } from '../lib/site';
 
 interface Props {
   title?: string;
@@ -11,12 +12,12 @@ interface Props {
 }
 
 const {
-  title = '知识花园',
-  description = '一个本地优先、缓慢生长的个人知识花园。',
+  title = SITE_NAME,
+  description = SITE_DESCRIPTION,
   image,
   type = 'website',
 } = Astro.props;
-const fullTitle = title === '知识花园' ? title : `${title} · 知识花园`;
+const fullTitle = title === SITE_NAME ? title : `${title} · ${SITE_NAME}`;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 const ogImage = image ? new URL(image, canonical) : undefined;
@@ -31,7 +32,7 @@ const ogImage = image ? new URL(image, canonical) : undefined;
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f4f0e5" />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" type="application/rss+xml" title="知识花园 RSS" href={`${base}rss.xml`} />
+    <link rel="alternate" type="application/rss+xml" title="知识博客 RSS" href={`${base}rss.xml`} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={type} />
@@ -40,7 +41,7 @@ const ogImage = image ? new URL(image, canonical) : undefined;
     <title>{fullTitle}</title>
     <script is:inline>
       (() => {
-        const saved = localStorage.getItem('knowledge-garden-theme');
+        const saved = localStorage.getItem('knowledge-blog-theme');
         const preferred = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         document.documentElement.dataset.theme = saved || preferred;
       })();
@@ -56,7 +57,7 @@ const ogImage = image ? new URL(image, canonical) : undefined;
       document.querySelector('.theme-toggle')?.addEventListener('click', () => {
         const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.theme = next;
-        localStorage.setItem('knowledge-garden-theme', next);
+        localStorage.setItem('knowledge-blog-theme', next);
       });
     </script>
   </body>

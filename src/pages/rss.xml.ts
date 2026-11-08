@@ -1,12 +1,13 @@
 import rss from '@astrojs/rss';
 import { getPublishedNotes, notePath } from '../lib/notes';
+import { SITE_DESCRIPTION, SITE_NAME } from '../lib/site';
 
 export async function GET(context: { site: URL }) {
   const notes = await getPublishedNotes();
   const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
   return rss({
-    title: '知识花园',
-    description: '一个本地优先、缓慢生长的个人知识花园。',
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     site: context.site,
     items: notes.map((note) => ({
       title: note.data.title,

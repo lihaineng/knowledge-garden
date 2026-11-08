@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getNoteDate, getPublishedNotes } from '../../lib/notes';
+import { articleEditUrl } from '../../lib/site';
 
 export async function getStaticPaths() {
   const notes = await getPublishedNotes();
@@ -17,11 +18,11 @@ const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 <BaseLayout title={note.data.title} description={note.data.description} type="article">
   <article class="note-page" data-pagefind-body>
     <header class="note-header">
-      <p class="eyebrow">GARDEN NOTE</p>
+      <p class="eyebrow">KNOWLEDGE ARTICLE</p>
       <h1 data-pagefind-meta="title">{note.data.title}</h1>
       <p class="note-description">{note.data.description}</p>
       <div class="note-byline">
-        <time datetime={date.toISOString()}>最近生长于 {date.toLocaleDateString('zh-CN')}</time>
+        <time datetime={date.toISOString()}>更新于 {date.toLocaleDateString('zh-CN')}</time>
         {note.data.tags.map((tag: string) => <a data-pagefind-filter={`tag:${tag}`} href={`${base}tags/${encodeURIComponent(tag)}/`}>#{tag}</a>)}
       </div>
     </header>
@@ -34,5 +35,6 @@ const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
         </aside>
       )}
     </div>
+    <footer class="article-actions"><p>发现错字或想继续补充？</p><a href={articleEditUrl(note.id)} target="_blank" rel="noreferrer">在 GitHub 编辑本文 ↗</a></footer>
   </article>
 </BaseLayout>

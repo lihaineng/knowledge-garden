@@ -2,18 +2,18 @@
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 const path = Astro.url.pathname;
 const links = [
-  { href: `${base}`, label: '花园' },
-  { href: `${base}notes/`, label: '笔记' },
-  { href: `${base}tags/`, label: '标签' },
+  { href: `${base}`, label: '首页' },
+  { href: `${base}notes/`, label: '文章' },
+  { href: `${base}tags/`, label: '主题' },
   { href: `${base}search/`, label: '搜索' },
-  { href: `${base}about/`, label: '关于' },
+  { href: `${base}write/`, label: '写文章' },
 ];
 ---
 
 <header class="site-header">
-  <a class="brand" href={base} aria-label="知识花园首页">
-    <span class="brand-mark" aria-hidden="true">芽</span>
-    <span>知识花园</span>
+  <a class="brand" href={base} aria-label="知识博客首页">
+    <span class="brand-mark" aria-hidden="true">知</span>
+    <span class="brand-copy"><strong>知识博客</strong><small>KNOWLEDGE NOTES</small></span>
   </a>
   <nav aria-label="主导航">
     {links.map((link) => (
@@ -21,6 +21,6 @@ const links = [
     ))}
   </nav>
   <button class="theme-toggle" type="button" aria-label="切换深浅色主题" title="切换主题">
-    <span class="theme-icon" aria-hidden="true">◐</span>
+    <span class="theme-icon" aria-hidden="true">◑</span>
   </button>
 </header>

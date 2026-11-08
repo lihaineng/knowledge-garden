@@ -1,73 +1,50 @@
-# 知识花园
+# 知识博客
 
-一个以本地 Markdown 为唯一内容源、使用 GitHub 备份并通过 GitHub Pages 自动发布的个人知识库。
+一个通过 GitHub 网页编辑器写作、由 GitHub Actions 构建并发布到 GitHub Pages 的个人知识博客。
 
-## 目录
+- 在线网站：<https://lihaineng.github.io/knowledge-garden/>
+- 写文章：<https://github.com/lihaineng/knowledge-garden/new/main/src/content/notes>
+- 发布状态：<https://github.com/lihaineng/knowledge-garden/actions>
 
-- `src/content/notes/`：公开笔记与草稿
-- `public/assets/`：图片、附件等静态资源
-- `src/pages/`：站点页面
-- `.github/workflows/deploy.yml`：自动检查、构建与发布
+## 在网页上发布文章
 
-现有工作区中的其他材料不会自动进入这个独立仓库。
-
-## 本地使用
-
-```bash
-npm install
-npm run dev
-```
-
-生产验证：
-
-```bash
-npm run check
-npm run build
-npm run preview
-```
-
-本地站点默认位于 `/knowledge-garden/`，与 GitHub Pages 的项目站点路径一致。
-
-## 新增笔记
-
-在 `src/content/notes/` 中创建 Markdown 文件：
+1. 打开网站导航中的“写文章”，或直接进入上方“写文章”链接。
+2. 输入以 `.md` 结尾的小写英文文件名，例如 `my-first-article.md`。
+3. 粘贴以下模板并填写内容：
 
 ```yaml
 ---
-title: 笔记标题
+title: 文章标题
 description: 一句话摘要
-created: 2026-11-08
-updated: 2026-11-08 # 可选
+created: 2026-11-09
 tags:
-  - 示例标签
-draft: false # 可选，默认为 false
+  - 主题
+draft: false
 ---
+
+从这里开始写正文。
 ```
 
-文件名使用小写英文和连字符，例如 `building-a-second-brain.md`。图片放入 `public/assets/`，在正文中使用 `/knowledge-garden/assets/example.png` 引用。
+4. 点击 **Commit changes** 并提交到 `main`。
+5. GitHub Actions 会自动检查内容、构建页面、生成全文搜索并部署到 GitHub Pages。
 
-`draft: true` 的笔记不会进入页面、全文搜索、RSS 或站点地图。注意：公开仓库中的源文件仍然可见，真正私密的内容不要提交到这个仓库。
+文章底部的“在 GitHub 编辑本文”可以直接打开对应源码。修改后再次提交即可更新网站。
 
-## 备份与发布
+## 内容规则
 
-```bash
-git add .
-git commit -m "Add a new garden note"
-git push origin main
-```
+- 文章位于 `src/content/notes/`，使用 Markdown。
+- 必填字段：`title`、`description`、`created`。
+- 可选字段：`updated`、`tags`、`draft`。
+- `draft: true` 不会进入网页、搜索、RSS 或站点地图，但源文件仍会在公开 GitHub 仓库中可见。
+- 图片可通过 GitHub 上传到 `public/assets/`，正文使用 `/knowledge-garden/assets/文件名` 引用。
 
-推送到 `main` 后，GitHub Actions 会依次执行内容与类型检查、静态构建、Pagefind 索引生成和 GitHub Pages 部署。
+## 发布与回滚
 
-首次发布前，在 GitHub 仓库的 **Settings → Pages → Build and deployment** 中选择 **GitHub Actions**。
+每次提交都会保留版本历史。需要回滚时，在 GitHub 打开对应提交或文件历史，使用 **Revert** 创建撤销提交；新的提交会再次触发自动发布。
 
-## 回滚
+## 技术栈
 
-查看历史并创建一个撤销提交：
-
-```bash
-git log --oneline
-git revert <commit-sha>
-git push origin main
-```
-
-不要用强制推送覆盖远程历史。回滚提交推送后，站点会自动重新部署。
+- Astro 静态站点
+- Pagefind 中文全文搜索
+- GitHub Actions 持续部署
+- GitHub Pages 托管

@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NoteCard from '../components/NoteCard.astro';
-import { getAllTags, getPublishedNotes, notePath } from '../lib/notes';
+import { getAllTags, getPublishedNotes } from '../lib/notes';
+import { NEW_ARTICLE_URL } from '../lib/site';
 
 const notes = await getPublishedNotes();
-const recent = notes.slice(0, 4);
+const featured = notes[0];
+const recent = notes.slice(1, 5);
 const tags = getAllTags(notes).slice(0, 8);
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 ---
@@ -12,51 +14,55 @@ const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 <BaseLayout>
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">LOCAL FIRST · SLOW GROWTH</p>
-      <h1>让想法在这里<br /><em>自然生长。</em></h1>
-      <p class="hero-intro">知识不是整理完毕的标本，而是持续发芽、彼此连接的路径。这座花园保存在本地，也向世界安静开放。</p>
+      <p class="eyebrow">WRITE ON GITHUB · PUBLISH TO THE WEB</p>
+      <h1>把思考写成<br /><em>长期可用的文章。</em></h1>
+      <p class="hero-intro">无需安装工具。打开 GitHub，写下一篇 Markdown，提交之后，这里便会自动更新。</p>
       <div class="hero-actions">
-        <a class="button primary" href={`${base}notes/`}>走进花园</a>
-        <a class="button ghost" href={`${base}search/`}>寻找一段记忆</a>
+        <a class="button primary" href={NEW_ARTICLE_URL} target="_blank" rel="noreferrer">开始写作 <span>↗</span></a>
+        <a class="button ghost" href={`${base}notes/`}>浏览文章</a>
       </div>
     </div>
-    <div class="garden-orbit" aria-hidden="true">
-      <span class="orbit orbit-one"></span><span class="orbit orbit-two"></span>
-      <span class="seed seed-one">思</span><span class="seed seed-two">察</span><span class="seed seed-three">记</span>
-      <span class="center-seed">知</span>
+    <div class="hero-issue" aria-label="博客出版流程">
+      <div class="issue-top"><span>ISSUE 001</span><span>2026—</span></div>
+      <div class="issue-mark">KN</div>
+      <div class="issue-flow"><span>WRITE</span><i></i><span>COMMIT</span><i></i><span>PUBLISH</span></div>
+      <p>一个仓库，一套自动发布流程，持续积累你的知识资产。</p>
     </div>
   </section>
 
-  <section class="garden-stats" aria-label="花园概览">
-    <div><strong>{notes.length}</strong><span>篇公开笔记</span></div>
-    <div><strong>{getAllTags(notes).length}</strong><span>个生长主题</span></div>
-    <div><strong>∞</strong><span>条可探索路径</span></div>
-  </section>
+  <section class="blog-ticker" aria-label="博客概览"><span>KNOWLEDGE BLOG</span><i></i><span>{notes.length} ARTICLES</span><i></i><span>{getAllTags(notes).length} TOPICS</span><i></i><span>POWERED BY GITHUB PAGES</span></section>
+
+  {featured && (
+    <section class="featured">
+      <div class="featured-label"><span>FEATURED</span><small>本期推荐</small></div>
+      <div class="featured-copy">
+        <p>{featured.data.tags.join(' · ')}</p>
+        <h2><a href={`${base}notes/${featured.id}/`}>{featured.data.title}</a></h2>
+        <p>{featured.data.description}</p>
+        <a href={`${base}notes/${featured.id}/`}>阅读文章 <span>→</span></a>
+      </div>
+      <div class="featured-number">01</div>
+    </section>
+  )}
 
   <section class="section-block">
     <div class="section-heading">
-      <div><p class="eyebrow">RECENT GROWTH</p><h2>最近生长</h2></div>
+      <div><p class="eyebrow">LATEST ARTICLES</p><h2>最新文章</h2></div>
       <a href={`${base}notes/`}>查看全部 →</a>
     </div>
     <div class="note-grid">{recent.map((note) => <NoteCard note={note} />)}</div>
   </section>
 
-  <section class="explore-panel">
+  <section class="topics-panel">
     <div>
-      <p class="eyebrow">WANDER BY TOPIC</p>
-      <h2>循着主题漫游</h2>
-      <p>标签不是抽屉，而是穿过花园的小径。</p>
+      <p class="eyebrow">BROWSE BY TOPIC</p>
+      <h2>按主题阅读</h2>
+      <p>从一个关键词出发，找到相关的观察、方法与实践。</p>
     </div>
     <div class="tag-cloud">
       {tags.map(([tag, count]) => <a href={`${base}tags/${encodeURIComponent(tag)}/`}>{tag}<sup>{count}</sup></a>)}
-      {tags.length === 0 && <span class="muted">第一条小径正在形成。</span>}
+      {tags.length === 0 && <span class="muted">还没有主题。</span>}
     </div>
-    {notes.length > 0 && <button class="random-note" data-notes={JSON.stringify(notes.map((n) => `${base}${notePath(n.id).slice(1)}`))}>随机漫游 ↝</button>}
+    <a class="topics-link" href={`${base}tags/`}>全部主题 ↗</a>
   </section>
-  <script is:inline>
-    document.querySelector('.random-note')?.addEventListener('click', (event) => {
-      const notes = JSON.parse(event.currentTarget.dataset.notes || '[]');
-      if (notes.length) location.href = notes[Math.floor(Math.random() * notes.length)];
-    });
-  </script>
 </BaseLayout>

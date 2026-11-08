@@ -4,6 +4,6 @@ const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 ---
 
 <footer class="site-footer">
-  <p>© {year} 知识花园 · 文字生长于本地，备份在 GitHub。</p>
-  <a href={`${base}rss.xml`}>RSS</a>
+  <div><strong>知识博客</strong><p>在 GitHub 写作，由 GitHub Pages 发布。</p></div>
+  <div class="footer-links"><a href={`${base}about/`}>关于</a><a href={`${base}rss.xml`}>RSS</a><span>© {year}</span></div>
 </footer>

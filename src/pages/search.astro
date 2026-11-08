@@ -3,8 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 ---
 
-<BaseLayout title="搜索" description="在知识花园中全文搜索。">
-  <header class="page-intro"><p class="eyebrow">FIND A MEMORY</p><h1>寻找一段记忆</h1><p>搜索在你的浏览器中完成，不会上传任何查询。</p></header>
+<BaseLayout title="搜索" description="在知识博客中全文搜索。">
+  <header class="page-intro"><p class="eyebrow">SEARCH THE ARCHIVE</p><h1>搜索文章</h1><p>输入关键词，在全部公开文章中快速定位内容。</p></header>
   <div id="search" class="search-shell"></div>
   <link rel="stylesheet" href={`${base}pagefind/pagefind-ui.css`} />
   <script is:inline define:vars={{ base }}>
