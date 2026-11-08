@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+---
+
+<BaseLayout title="搜索" description="在知识花园中全文搜索。">
+  <header class="page-intro"><p class="eyebrow">FIND A MEMORY</p><h1>寻找一段记忆</h1><p>搜索在你的浏览器中完成，不会上传任何查询。</p></header>
+  <div id="search" class="search-shell"></div>
+  <link rel="stylesheet" href={`${base}pagefind/pagefind-ui.css`} />
+  <script is:inline define:vars={{ base }}>
+    const script = document.createElement('script');
+    script.src = `${base}pagefind/pagefind-ui.js`;
+    script.onload = () => new PagefindUI({ element: '#search', showSubResults: true, showImages: false, resetStyles: false });
+    script.onerror = () => { document.querySelector('#search').innerHTML = '<p class="search-status">搜索索引仅在执行生产构建后可用。</p>'; };
+    document.head.appendChild(script);
+  </script>
+</BaseLayout>

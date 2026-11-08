@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteCard from '../../components/NoteCard.astro';
+import { getAllTags, getPublishedNotes } from '../../lib/notes';
+
+export async function getStaticPaths() {
+  const notes = await getPublishedNotes();
+  return getAllTags(notes).map(([tag]) => ({ params: { tag }, props: { tag, notes: notes.filter((n) => n.data.tags.includes(tag)) } }));
+}
+const { tag, notes } = Astro.props;
+---
+
+<BaseLayout title={`标签：${tag}`} description={`知识花园中关于“${tag}”的笔记。`}>
+  <header class="page-intro"><p class="eyebrow">GARDEN PATH</p><h1>#{tag}</h1><p>这条小径上有 {notes.length} 篇笔记。</p></header>
+  <div class="note-grid full">{notes.map((note) => <NoteCard note={note} />)}</div>
+</BaseLayout>

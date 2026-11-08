@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NoteCard from '../components/NoteCard.astro';
+import { getAllTags, getPublishedNotes, notePath } from '../lib/notes';
+
+const notes = await getPublishedNotes();
+const recent = notes.slice(0, 4);
+const tags = getAllTags(notes).slice(0, 8);
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">LOCAL FIRST · SLOW GROWTH</p>
+      <h1>让想法在这里<br /><em>自然生长。</em></h1>
+      <p class="hero-intro">知识不是整理完毕的标本，而是持续发芽、彼此连接的路径。这座花园保存在本地，也向世界安静开放。</p>
+      <div class="hero-actions">
+        <a class="button primary" href={`${base}notes/`}>走进花园</a>
+        <a class="button ghost" href={`${base}search/`}>寻找一段记忆</a>
+      </div>
+    </div>
+    <div class="garden-orbit" aria-hidden="true">
+      <span class="orbit orbit-one"></span><span class="orbit orbit-two"></span>
+      <span class="seed seed-one">思</span><span class="seed seed-two">察</span><span class="seed seed-three">记</span>
+      <span class="center-seed">知</span>
+    </div>
+  </section>
+
+  <section class="garden-stats" aria-label="花园概览">
+    <div><strong>{notes.length}</strong><span>篇公开笔记</span></div>
+    <div><strong>{getAllTags(notes).length}</strong><span>个生长主题</span></div>
+    <div><strong>∞</strong><span>条可探索路径</span></div>
+  </section>
+
+  <section class="section-block">
+    <div class="section-heading">
+      <div><p class="eyebrow">RECENT GROWTH</p><h2>最近生长</h2></div>
+      <a href={`${base}notes/`}>查看全部 →</a>
+    </div>
+    <div class="note-grid">{recent.map((note) => <NoteCard note={note} />)}</div>
+  </section>
+
+  <section class="explore-panel">
+    <div>
+      <p class="eyebrow">WANDER BY TOPIC</p>
+      <h2>循着主题漫游</h2>
+      <p>标签不是抽屉，而是穿过花园的小径。</p>
+    </div>
+    <div class="tag-cloud">
+      {tags.map(([tag, count]) => <a href={`${base}tags/${encodeURIComponent(tag)}/`}>{tag}<sup>{count}</sup></a>)}
+      {tags.length === 0 && <span class="muted">第一条小径正在形成。</span>}
+    </div>
+    {notes.length > 0 && <button class="random-note" data-notes={JSON.stringify(notes.map((n) => `${base}${notePath(n.id).slice(1)}`))}>随机漫游 ↝</button>}
+  </section>
+  <script is:inline>
+    document.querySelector('.random-note')?.addEventListener('click', (event) => {
+      const notes = JSON.parse(event.currentTarget.dataset.notes || '[]');
+      if (notes.length) location.href = notes[Math.floor(Math.random() * notes.length)];
+    });
+  </script>
+</BaseLayout>

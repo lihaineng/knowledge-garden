@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteCard from '../../components/NoteCard.astro';
+import { getPublishedNotes } from '../../lib/notes';
+const notes = await getPublishedNotes();
+---
+
+<BaseLayout title="全部笔记" description="知识花园中的全部公开笔记。">
+  <header class="page-intro"><p class="eyebrow">ALL NOTES</p><h1>全部笔记</h1><p>按最近生长时间排列。每一篇都是暂时的答案。</p></header>
+  <div class="note-grid full">{notes.map((note) => <NoteCard note={note} />)}</div>
+</BaseLayout>
