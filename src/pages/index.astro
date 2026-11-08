@@ -6,37 +6,29 @@ import { NEW_ARTICLE_URL } from '../lib/site';
 
 const notes = await getPublishedNotes();
 const featured = notes[0];
-const recent = notes.slice(1, 5);
-const tags = getAllTags(notes).slice(0, 8);
+const recent = notes.slice(1, 6);
+const tags = getAllTags(notes).slice(0, 10);
 const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 ---
 
 <BaseLayout>
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">WRITE ON GITHUB · PUBLISH TO THE WEB</p>
-      <h1>把思考写成<br /><em>长期可用的文章。</em></h1>
-      <p class="hero-intro">无需安装工具。打开 GitHub，写下一篇 Markdown，提交之后，这里便会自动更新。</p>
-      <div class="hero-actions">
-        <a class="button primary" href={NEW_ARTICLE_URL} target="_blank" rel="noreferrer">开始写作 <span>↗</span></a>
-        <a class="button ghost" href={`${base}notes/`}>浏览文章</a>
-      </div>
+      <p class="eyebrow">KNOWLEDGE ARCHIVE / 2026</p>
+      <h1>记录正在<br /><span>发生的思考。</span></h1>
+      <p class="hero-intro">这里是一个轻量的个人知识档案。写作、阅读、工具和实践，都被整理成可以回看的文章。</p>
+      <div class="hero-actions"><a class="button primary" href={NEW_ARTICLE_URL} target="_blank" rel="noreferrer">打开 GitHub 写作 <span>↗</span></a><a class="button ghost" href={`${base}notes/`}>浏览归档</a></div>
     </div>
-    <div class="hero-issue" aria-label="博客出版流程">
-      <div class="issue-top"><span>ISSUE 001</span><span>2026—</span></div>
-      <div class="issue-mark">KN</div>
-      <div class="issue-flow"><span>WRITE</span><i></i><span>COMMIT</span><i></i><span>PUBLISH</span></div>
-      <p>一个仓库，一套自动发布流程，持续积累你的知识资产。</p>
-    </div>
+    <div class="hero-panel"><div class="hero-panel-top"><span>ARCHIVE / 001</span><span>LIVE</span></div><div class="hero-glyph">知</div><p>一边学习，一边记录；一边记录，一边形成自己的方法。</p><div class="hero-stats"><div><strong>{notes.length}</strong><span>篇文章</span></div><div><strong>{getAllTags(notes).length}</strong><span>个主题</span></div><div><strong>GH</strong><span>持续发布</span></div></div></div>
   </section>
 
-  <section class="blog-ticker" aria-label="博客概览"><span>KNOWLEDGE BLOG</span><i></i><span>{notes.length} ARTICLES</span><i></i><span>{getAllTags(notes).length} TOPICS</span><i></i><span>POWERED BY GITHUB PAGES</span></section>
+  <section class="blog-ticker" aria-label="博客概览"><span>PERSONAL ARCHIVE</span><i></i><span>WRITE IN MARKDOWN</span><i></i><span>PUBLISH WITH GITHUB</span></section>
 
   {featured && (
     <section class="featured">
-      <div class="featured-label"><span>FEATURED</span><small>本期推荐</small></div>
+      <div class="featured-label"><span>PINNED</span><small>置顶文章</small></div>
       <div class="featured-copy">
-        <p>{featured.data.tags.join(' · ')}</p>
+        <p class="mono-label">{featured.data.tags.join(' · ')}</p>
         <h2><a href={`${base}notes/${featured.id}/`}>{featured.data.title}</a></h2>
         <p>{featured.data.description}</p>
         <a href={`${base}notes/${featured.id}/`}>阅读文章 <span>→</span></a>

@@ -12,15 +12,13 @@ const links = [
 
 <header class="site-header">
   <a class="brand" href={base} aria-label="知识博客首页">
-    <span class="brand-mark" aria-hidden="true">知</span>
-    <span class="brand-copy"><strong>知识博客</strong><small>KNOWLEDGE NOTES</small></span>
+    <span class="brand-mark" aria-hidden="true">KN</span>
+    <span class="brand-copy"><strong>知识博客</strong><small>/ PERSONAL ARCHIVE</small></span>
   </a>
   <nav aria-label="主导航">
     {links.map((link) => (
       <a href={link.href} aria-current={path === link.href ? 'page' : undefined}>{link.label}</a>
     ))}
   </nav>
-  <button class="theme-toggle" type="button" aria-label="切换深浅色主题" title="切换主题">
-    <span class="theme-icon" aria-hidden="true">◑</span>
-  </button>
+  <div class="header-tools"><span class="site-status"><i></i> 在线写作中</span><button class="theme-toggle" type="button" aria-label="切换深浅色主题" title="切换主题"><span class="theme-icon" aria-hidden="true">◐</span></button></div>
 </header>

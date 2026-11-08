@@ -9,14 +9,11 @@ const date = getNoteDate(note);
 ---
 
 <article class="note-card">
-  <div class="note-card-index" aria-hidden="true">KN</div>
+  <span class="note-card-index" aria-hidden="true">{String(note.id).padStart(2, '0')}</span>
   <div class="note-card-body">
-    <div class="note-card-meta">
-      <time datetime={date.toISOString()}>{date.toLocaleDateString('zh-CN')}</time>
-      <span>{note.data.tags[0] ?? '未分类'}</span>
-    </div>
     <h2><a href={`${base}${notePath(note.id).slice(1)}`}>{note.data.title}</a></h2>
     <p>{note.data.description}</p>
+    <div class="note-card-meta"><time datetime={date.toISOString()}>{date.toLocaleDateString('zh-CN')}</time>{note.data.tags.slice(0, 3).map((tag) => <span>#{tag}</span>)}</div>
   </div>
-  <a class="read-more" href={`${base}${notePath(note.id).slice(1)}`} aria-label={`阅读《${note.data.title}》`}>阅读全文 <span>↗</span></a>
+  <a class="read-more" href={`${base}${notePath(note.id).slice(1)}`} aria-label={`阅读《${note.data.title}》`}>阅读 <span>↗</span></a>
 </article>
